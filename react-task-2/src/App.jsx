@@ -6,27 +6,10 @@ import Navbar from './components/Navbar';
 import { createBrowserRouter,RouterProvider  } from "react-router";
 import {  useState, useEffect } from 'react'
 
-
 function App() {
   const[carts,setCarts]=useState([])
   const [loading, setLoading] = useState(true);
   const[products,setProducts]=useState([]);
-      
-  const addToCart=(message)=>{
-   
-    const itemExits=carts.some(item=> item.id===message.id)
-    console.log("itemExits",itemExits)
-    console.log(carts)
-    if(itemExits){
-      console.log("item")
-      alert("This product is already in your cart!");
-    }else{
-      setCarts([...carts, message]);
-      console.log(message)
-      console.log("Current cart:", [...carts, message]);
-    }
- 
-    }
   
       useEffect(()=>{
         axios.get('https://fakestoreapi.com/products')
@@ -39,11 +22,37 @@ function App() {
           })
          
       },[])
+      
+      useEffect(() => {
+        console.log("Cart component re-rendered");
+      }, [carts]);
     
       if (loading) {
         return <h1 className='pt-16 text-xl semibold'>Loading....</h1>;
       }
+      //addtocart button 
+      const addToCart = (message) => {
+        setCarts((prevCarts) => {
+          const itemExits = prevCarts.find(item => item.id === message.id);
+          
+          if (itemExits) {
+            alert("This product is already in your cart!");
+            return prevCarts;
+          } else {
+            const updated = [...prevCarts, message];
+            console.log("Added to cart:", message);
+            console.log("Updated cart:", updated);
+            return updated;
+          }
+        });
+      };
+
+      //remove button
       
+      const removeCart = (id) => {
+        setCarts((prevCarts) => prevCarts.filter((item) => item.id !== id));
+        console.log("Removed item id:", id);
+      };
  
 const router = createBrowserRouter([
   {
@@ -60,7 +69,7 @@ const router = createBrowserRouter([
     element:(
       <>
         <Navbar />
-        <Cart carts={carts}/>
+        <Cart carts={carts} removeCart={removeCart}/>
       </>
     ),
   },

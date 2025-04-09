@@ -17,7 +17,7 @@ function Product({ products, addToCart}) {
         <img className='w-1/2 h-1/2 mx-auto ' src={product.image} alt={product.title}/>
         <p className=' text-sm font-bold '>{product.title}</p>
         <h1 className='text-xl text-gray-600 font-bold '>${product.price.toFixed(2)}</h1>
-        <button onClick={()=>addToCart(product)}className='w-full bg-blue-400 hover:bg-blue-600 text-white py-2 rounded shdow-md'>Add to Cart</button>
+        <button onClick={()=>addToCart(product)}className='w-full bg-blue-400 hover:bg-blue-600 text-white py-2 rounded shdow-md transition-all duration-300 transforn active:scale-95'>Add to Cart</button>
        </div>
        </div>
       ))
