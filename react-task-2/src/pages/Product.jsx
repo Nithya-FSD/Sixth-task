@@ -13,8 +13,8 @@ function Product({ products, addToCart, removeCart, carts }) {
     <div className='p-4 pt-20 gap-8 container mx-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4'>
       {products.map(product => (
        <div key={product.id}> 
-       <div className='bg-white p-4 h-full rounded shadow-md flex flex-col justify-between mx-auto w-[80%] md:w-full' >
-        <img className='w-1/2 h-1/2 mx-auto' src={product.image} alt={product.title}/>
+       <div className='bg-white p-4 rounded space-y-1 shadow-md flex flex-col justify-between w-full h-full' >
+        <img className='w-1/2 h-48 mx-auto object-contain' src={product.image} alt={product.title}/>
         <p className='text-sm font-bold'>{product.title}</p>
         <h1 className='text-xl text-gray-600 font-bold'>${product.price.toFixed(2)}</h1>
         
