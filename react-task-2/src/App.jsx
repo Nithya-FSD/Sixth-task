@@ -3,13 +3,15 @@ import axios from 'axios'
 import Product from './pages/Product'
 import  Cart from './pages/Cart'
 import Navbar from './components/Navbar';
-import { createBrowserRouter,RouterProvider  } from "react-router";
+import { BrowserRouter,Route, Routes  } from "react-router";
 import {  useState, useEffect } from 'react'
 
 function App() {
   const[carts,setCarts]=useState([])
   const [loading, setLoading] = useState(true);
   const[products,setProducts]=useState([]);
+  const[count,setCount]=useState(0)
+  
   
       useEffect(()=>{
         axios.get('https://fakestoreapi.com/products')
@@ -26,6 +28,11 @@ function App() {
       useEffect(() => {
         console.log("Cart component re-rendered");
       }, [carts]);
+
+      //cart count
+      useEffect(() => {
+        setCount(carts.length)
+      }, [carts]);
     
       if (loading) {
         return <h1 className='pt-16 text-xl semibold'>Loading....</h1>;
@@ -33,19 +40,18 @@ function App() {
       //addtocart button 
       const addToCart = (message) => {
         setCarts((prevCarts) => {
-          const itemExits = prevCarts.find(item => item.id === message.id);
+          return [...prevCarts, { ...message, quantity: 1 }] })}
+
+      //     const itemExits = prevCarts.find(item => item.id === message.id);
           
-          if (itemExits) {
-            alert("This product is already in your cart!");
-            return prevCarts;
-          } else {
-            const updated = [...prevCarts, message];
-            console.log("Added to cart:", message);
-            console.log("Updated cart:", updated);
-            return updated;
-          }
-        });
-      };
+      //     if (itemExits) {
+      //       return prevCarts;
+      //     } else {
+      //       const updated = [...prevCarts, { ...message, quantity: 1 }]; 
+      //       return updated;
+      //     }
+      //   });
+      // };
 
       //remove button
       
@@ -53,47 +59,42 @@ function App() {
         setCarts((prevCarts) => prevCarts.filter((item) => item.id !== id));
         console.log("Removed item id:", id);
       };
- 
-const router = createBrowserRouter([
-  {
-    path:"/",
-    element:(
-      <>
-        <Navbar />
-        <Product products={products} addToCart={addToCart}/>
-      </>
-    ),
-  },
-  {
-    path:"/cart",
-    element:(
-      <>
-        <Navbar />
-        <Cart carts={carts} removeCart={removeCart}/>
-      </>
-    ),
-  },
-], {
-  future: {
-      v7_relativeSplatPath: true,
-      v7_fetcherPersist: true,
-      v7_normalizeFormMethod: true,
-      v7_partialHydration: true,
-      v7_skipActionErrorRevalidation: true,
-  }
-})
 
+
+      const quantityInc = (id) => {
+        setCarts(prevCarts =>
+          prevCarts.map(item =>
+            item.id === id
+              ? { ...item, quantity: item.quantity + 1 }
+              : item
+          )
+        );
+      };
+
+      const quantityDec = (id) => {
+        setCarts(prevCarts =>
+          prevCarts.map(item =>{
+            if(item.id === id ){
+           const qty=item.quantity-1
+           const  belowOne= qty>1?item.quantity-1:1
+           return { ...item, quantity:belowOne };
+            }
+            return item
+          }  
+          )
+        );
+      };
+                                                                                         
 return (
 
-  <div>
-    
-     <RouterProvider
-      router={router}
-      future={{
-          v7_startTransition: true,
-      }}
-    />
-  </div>
+  <BrowserRouter>
+  <Navbar count={count}/>
+  <Routes>
+    <Route path="/" element={<Product products={products} addToCart={addToCart} removeCart={removeCart}  carts={carts}/>} />
+    <Route path="/cart" element={<Cart carts={carts} removeCart={removeCart} quantityInc={quantityInc}  quantityDec={quantityDec}/>} />
+  </Routes>
+</BrowserRouter>
+
 )
 }
 
