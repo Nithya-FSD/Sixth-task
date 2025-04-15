@@ -29,7 +29,7 @@ function Cart({ carts, removeCart , quantityInc,quantityDec }) {
          <div className='space-x-2   space-y-2'>
          <button onClick={()=>quantityInc(items.id)} className='bg-yellow-400 px-4 py-1 rounded hover:bg-yellow-500 transition-all duration-300 transform active:scale-95 font-bold'>+</button>
          <button onClick={()=>quantityDec(items.id)} className='bg-yellow-400 px-4 py-1 rounded hover:bg-yellow-500 transition-all duration-300 transform active:scale-95 font-bold '>-</button>
-         <button onClick={()=>removeCart(items.id)}className=' mb-4 bg-red-500  px-4 py-1 rounded hover:bg-red-600   transition-all duration-300 transform active:scale-95'>remove</button>
+         <button onClick={()=>removeCart(items.id)}className=' mb-4 bg-red-500  px-4 py-1 rounded hover:bg-red-600   transition-all duration-300 transform active:scale-95'>Remove</button>
        
          </div>
          < hr className='border-t-1 border-gray-400 mt-6'/>
