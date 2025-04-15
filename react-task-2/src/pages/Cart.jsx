@@ -16,12 +16,12 @@ function Cart({ carts, removeCart , quantityInc,quantityDec }) {
     <div className=''>
       <div className='p-6  bg-gray-100 min-h-screen '>
       <div className='   py-6 '>
-      <div className='bg-white mt-10 container w-[90%] mb-0 md:max-w-[60%]   p-4  mx-auto'>
+      <div className='bg-white mt-10 container w-[90%] mb-0 md:max-w-[60%]   p-6  mx-auto'>
         <p className='text-2xl font-semibold'>Shopping Cart</p>
       {carts.map((items)=>(
        <div key={items.id}>
        
-          <img className="w-[10%] h-[10%] mt-4" src={items.image}/>
+          <img className="w-48 h-48 mt-4" src={items.image}/>
          <p className=' mt-4 text-base font-semibold'>{items.title}</p>
          <h1 className='text-base text-gray-800 font-semibold'>${items.price.toFixed(2) * items.quantity}</h1>
 
